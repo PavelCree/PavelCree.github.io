@@ -1,0 +1,413 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Сотрудники</title>
+    <meta name="description" content="Сотрудники">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="bootstrap.css">
+
+    <style type="text/css">
+        div {
+            width: 100%;
+
+            background: rgba(255, 255, 255, 0);
+
+            padding: 0px;
+
+            -moz-box-sizing: border-box;
+
+            -webkit-box-sizing: border-box;
+
+            box-sizing: border-box;
+
+            border-style: hidden;
+            margin: 0px;
+            padding: 3px;
+
+        }
+    </style>
+
+
+
+    <div id="navbar-container" class="items-container" style="height: 50px;">
+        <div class="navbar">
+            <ul id="navbarItems">
+                <li><a href="index.html">Список сотрудников</a></li>
+                <li><a href="index.html">Ссылка 1</a></li>
+                <li><a href="index.html">Ссылка 2</a></li>
+                <li><a href="index.html">Ссылка 3</a></li>
+                <li><a href="login.html">Вход</a></li>
+            </ul>
+        </div>
+    </div>
+</head>
+
+<body>
+
+
+    <div class="row" id="root">
+
+    </div>
+
+</body>
+
+<footer class="main_footer">
+</footer>
+
+<script type="text/babel" id="babScripts">
+
+
+class InputName extends React.Component
+{
+    constructor(props) {
+    super(props);
+    this.state = {text: ''};
+  }
+
+    onBlur(event)
+    {   if (event.target.value!="")
+        {
+        this.setState({text: event.target.value});
+        this.props.sendFunction()
+        }
+    }
+    
+  render() {
+    return (<div>
+            <input type="text" name="empFIO" id="empFIO" class="control" placeholder="Фамилия Имя Отчество"  onBlur={this.onBlur.bind(this)} required/>
+      </div>);
+  }
+}
+
+class InputPos extends React.Component
+{
+    constructor(props) {
+    super(props);
+    this.state = {text: '', text2: ''};
+
+  }
+
+    onBlur(event)
+    {   if (event.target.value!="")
+        {
+        this.setState({text: event.target.value});
+        this.props.sendFunction()
+        }
+    }
+    
+  render() {
+    return (<div>
+            <select name="empPos" id="empPos" class="control" onChange={this.onBlur.bind(this)}> </select>
+      </div>);
+  }
+}
+
+class InputDate extends React.Component
+{
+    constructor(props) {
+    super(props);
+    this.state = {text: '', text2: ''};
+
+
+  }
+
+
+  render() {
+    return (<div>
+            <input type="date" name="empBDate" id="empBDate" class="control"/>
+      </div>);
+  }
+}
+            
+class InputSex extends React.Component
+{
+    constructor(props) {
+    super(props);
+    this.state = {text: '', text2: ''};
+  }
+
+    onBlur(event)
+    {   if (event.target.value!="")
+        {
+        this.setState({text: event.target.value});
+        this.props.sendFunction()
+        }
+    }
+  render() {
+    return (<div onChange={this.onBlur.bind(this)}>
+            <label for="empSexMale" style= {{paddingRight: "0.5em"}}>Мужской</label>
+                <input type="radio"  name="empSex" id="empSexMale" value="Мужской" class="check" />
+            <label for="empSexFemale" style= {{paddingLeft: "10%", paddingRight: "0.5em"}}>Женский</label>
+                <input type="radio" name="empSex" id="empSexFemale" value="Женский" class="check" />
+      </div>);
+  }
+}
+
+
+
+class InputFired extends React.Component
+{
+    constructor(props) {
+    super(props);
+    this.state = {text: '', text2: ''};
+  }
+
+onBlur(event)
+    {   if (event.target.value!="")
+        {
+        this.setState({text: event.target.value});
+        this.props.sendFunction()
+        }
+    }
+  render() {
+      
+    return (<div>
+         <label for="empFired" style= {{paddingRight: "0.5em"}}>Уволен</label>
+                <input type="checkbox" name="empFired" id="empFired" class="check" onChange={this.onBlur.bind(this)}/>
+      </div>);
+  }
+}
+    
+    
+    class App extends React.Component {
+  state = {
+    rows: [],
+    updateCount:0
+  };
+  
+    handleChangeRow = () => {
+    var frd="";
+    var sex="";
+    if ($('#empFired:checked').length>0)
+        {frd="Уволен(а)"}
+    else
+        {frd="Работает"}
+    if ($("#empSexMale:checked").length>0)
+        {
+        sex="Мужской"
+        }
+        else
+        {sex="Женский"}
+    const rows = [...this.state.rows];
+    rows[$("#table_body tr").parent().children(".selected").index()] = {
+      name: $("#empFIO").val(),
+      pos: $("#empPos").val(),
+      bdate: $("#empBDate").val(),
+      sex: sex,
+      fired: frd
+    };
+    this.setState({
+      rows
+    });
+  };
+
+
+handleAddRow = () => {
+    if ($("#empFIO").val()!="")
+        {
+    var frd="";
+    var sex="";
+    if ($('#empFired:checked').length>0)
+        {frd="Уволен(а)"}
+    else
+        {frd="Работает"}
+    if ($("#empSexMale:checked").length>0)
+        {
+        sex="Мужской"
+        }
+        else
+        {sex="Женский"}
+    
+    const item = {
+      name: $("#empFIO").val(),
+      pos: $("#empPos").val(),
+      bdate: $("#empBDate").val(),
+      sex: sex,
+      fired: frd
+    };
+    this.setState({
+      rows: [...this.state.rows, item],
+        updateCount:0
+    });
+        }
+  };
+
+
+  handleRemoveRow = () => {
+    const rows = [...this.state.rows]
+    rows.splice($("#table_body tr").parent().children(".selected").index(), 1)
+    this.setState({ rows, updateCount:0 })
+    if (rows.length==0)
+        {
+        $("#delete").prop("disabled", true);
+        $("#ok").prop("disabled", false);
+        }
+  };
+
+componentDidMount()
+{
+    var dropDown = document.getElementById("empPos");
+    var points = ["Стажёр", "Младший специалист", "Специалист", "Руководитель"];
+
+function populateCats() {
+    for (var i = 0; i < points.length; i++) {
+        var element = document.createElement("option");
+        element.textContent = points[i];
+        element.value = points[i];
+        dropDown.appendChild(element);
+    }
+}
+
+$("#empSexMale").prop("checked", true);
+$("#delete").prop("disabled", true);
+populateCats();
+}
+
+componentDidUpdate(prevProps)
+{
+
+    var points = ["Стажёр", "Младший специалист", "Специалист", "Руководитель"];
+    $("#table_body tr").click(function () {
+    
+    if (!$(this).hasClass("selected"))
+    {
+        $(this).addClass("selected");
+        $(this).siblings().removeClass("selected");
+        var values = $(this).find("td");
+        var empFIO = values[0].innerHTML;
+        var empPos = values[1].innerHTML;
+        var curDate= values[2].innerHTML;
+        var empFired = values[4].innerHTML;
+        var empSex = values[3].innerHTML;
+        if (empSex=="Мужской")
+            {
+            $("#empSexMale").prop("checked", true);
+        }
+        else
+            {
+            $("#empSexFemale").prop("checked", true)
+        }
+        
+        if (empFired=="Уволен(а)")
+            {
+            $("#empFired").prop("checked", true)
+        }
+        else
+            {
+            $("#empFired").prop("checked", false);
+        }
+        
+        $("#empFIO").val(empFIO);
+        $("#empBDate").val(curDate);
+        $("#empPos").val(points[points.indexOf(empPos)]);
+        $("#ok").prop("disabled", true);
+        $("#delete").prop("disabled", false);
+    }
+        else
+            {
+     if (($(this).hasClass("selected"))&&($("#table_body tr").parent().children(".selected").index()==$(this).index())) {
+        $(this).removeClass("selected");
+        $("#empFIO").val("");
+        $("#empBDate").val("");
+        $("#empPos").val(points[0]);
+        $("#empFired").prop("checked", false);
+        $("#empSexMale").prop("checked", true);
+        $("#delete").prop("disabled", true);
+        $("#ok").prop("disabled", false);
+    }   
+    }
+                this.setState({
+      rows: [...this.state.rows],
+        updateCount: this.updateCount+1
+    });
+});
+}
+
+
+
+
+
+  render() {
+    return (
+        <div>
+            <div class="panel panel-primary" style={{marginLeft: "1%"}}>
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-cog"></span>Панель управления</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <input type="button" style={{marginRight: "2em"}} class="btn btn-primary btn-lg" role="submit" value="Добавить" id="ok" onClick={this.handleAddRow}/>
+                        <input type="button" class="btn btn-danger btn-lg" role="submit" value="Удалить" id="delete" onClick={this.handleRemoveRow}/>
+                    </div>
+                
+            </div>
+        </div> 
+                </div>
+            <div className="row" style={{marginLeft: "0.5%"}}>     
+            <div className="col-md-6 col-sm-12">
+              <table
+                className="table table-bordered">
+                <thead className="table-header">
+                  <tr>
+                    <th className="text-center"> ФИО </th>
+                    <th className="text-center"> Должность </th>
+                    <th className="text-center"> Дата рождения </th>
+                    <th className="text-center"> Пол </th>
+                    <th className="text-center"> Уволен(а) </th>
+                  </tr>
+                </thead>
+                <tbody id="table_body" className="table-main">
+                  {this.state.rows.map((item, id) => (
+                    <tr key={id}>
+                      <td>
+                          {this.state.rows[id].name}
+                      </td>
+                      <td>
+                          {this.state.rows[id].pos}
+                      </td>
+                      <td>
+                          {this.state.rows[id].bdate}
+                      </td>
+                      <td>
+                          {this.state.rows[id].sex}
+                      </td>
+                      <td>
+                          {this.state.rows[id].fired}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+        
+        
+                
+        <div class="col-md-6 col-sm-12" style={{margin: "0px", padding: "0px"}}>
+            <div class="EmpDetails" id="EmpList">
+            <InputName sendFunction={this.handleChangeRow}/>
+            <InputPos sendFunction={this.handleChangeRow}/>
+            <InputDate sendFunction={this.handleChangeRow}/>
+            <InputSex sendFunction={this.handleChangeRow}/>
+            <InputFired sendFunction={this.handleChangeRow}/>
+            </div>
+        </div>   
+        </div>
+        </div>
+    );
+  }
+}
+
+
+ReactDOM.render(<App />, document.getElementById("root"));
+    
+</script></html>

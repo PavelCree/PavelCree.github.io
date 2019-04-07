@@ -1,0 +1,99 @@
+.header {
+    background-image: url('bootstrap/header.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.description {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(230, 230, 230, 0.16);
+}
+
+h2 {
+    color: black;
+    text-shadow: 2px 1px 2px black;
+}
+
+h3 {
+    color: black;
+    text-decoration-color: black;
+}
+
+
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.36);
+    color: aqua;
+}
+
+
+
+.control {
+     width: 15em;
+    height: 3em;
+    border-radius: 10px;
+    background-color: rgba(240, 248, 255, 0.20);
+    position: relative;
+}
+
+.file {
+   
+}
+
+input {
+    
+}
+
+
+.glyphicon {
+    color: black;
+    padding: 1em;
+    
+}
+
+.formquery {
+    position: relative;
+}
+
+
+.img-fluid {
+    
+}
+
+.form-sec {
+    position: relative;
+}
+
+.btn-default {
+    
+}
+
+.panel-primary
+{    background-color: rgba(240, 248, 255, 0.69);
+    margin-bottom: 0px;
+}
+.panel-title
+{
+    background-color:#669999;
+    text-decoration-color: black;
+}
+.panel-primary .panel-heading
+{
+    background-color: #669999;
+}
+
+
+.btn-primary
+{ 
+    background-color:rgba( 48, 176, 232, 0.393 );
+}
+
+.btn-danger
+{   
+    background-color:gba( 232, 51, 48, 0.6 );
+}
