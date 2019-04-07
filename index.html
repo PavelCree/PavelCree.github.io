@@ -128,7 +128,7 @@ onBlur(event)
     }
   render() {
     return (<div>
-            <input type="date" name="empBDate" id="empBDate" class="control" onChange={this.onBlur.bind(this)}/>
+            <input type="date" name="empBDate" id="empBDate" class="control" min="2000-01-02" onBlur={this.onBlur.bind(this)}/>
       </div>);
   }
 }
