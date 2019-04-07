@@ -119,10 +119,16 @@ class InputDate extends React.Component
 
   }
 
-
+onBlur(event)
+    {   if (event.target.value!="")
+        {
+        this.setState({text: event.target.value});
+        this.props.sendFunction()
+        }
+    }
   render() {
     return (<div>
-            <input type="date" name="empBDate" id="empBDate" class="control"/>
+            <input type="date" name="empBDate" id="empBDate" class="control" onChange={this.onBlur.bind(this)}/>
       </div>);
   }
 }
@@ -170,7 +176,7 @@ onBlur(event)
   render() {
       
     return (<div>
-         <label for="empFired" style= {{paddingRight: "0.5em"}}>Уволен</label>
+         <label for="empFired" style= {{paddingRight: "0.5em"}}>Уволен(а)</label>
                 <input type="checkbox" name="empFired" id="empFired" class="check" onChange={this.onBlur.bind(this)}/>
       </div>);
   }
