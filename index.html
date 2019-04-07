@@ -33,6 +33,7 @@
             padding: 3px;
 
         }
+
     </style>
 
 
@@ -65,7 +66,7 @@
 <script type="text/babel" id="babScripts">
 
 
-class InputName extends React.Component
+    class InputName extends React.Component
 {
     constructor(props) {
     super(props);
@@ -186,7 +187,7 @@ onBlur(event)
     class App extends React.Component {
   state = {
     rows: [],
-    updateCount:0
+    selectedRow:-1
   };
   
     handleChangeRow = () => {
@@ -239,9 +240,10 @@ handleAddRow = () => {
       sex: sex,
       fired: frd
     };
+    var selected=this.state.rows.length+1
     this.setState({
       rows: [...this.state.rows, item],
-        updateCount:0
+        selectedRow: selected
     });
         }
   };
@@ -250,7 +252,7 @@ handleAddRow = () => {
   handleRemoveRow = () => {
     const rows = [...this.state.rows]
     rows.splice($("#table_body tr").parent().children(".selected").index(), 1)
-    this.setState({ rows, updateCount:0 })
+    this.setState({ rows, selectedRow: -1 })
     if (rows.length==0)
         {
         $("#delete").prop("disabled", true);
@@ -259,19 +261,50 @@ handleAddRow = () => {
   };
 
     handleClickRow(event) {
-        var points = ["Стажёр", "Младший специалист", "Специалист", "Руководитель"];
-       if (!(event.target.parentElement.className == "selected"))
-    {
-        $(".selected").removeClass("selected");
-        //event.target.parentElement.siblings().className="";
-        event.target.parentElement.className = "selected";
-        var values =event.target.parentElement.children;
-        var empFIO = values[0].textContent;
-        var empPos = values[1].textContent;
-        var curDate= values[2].textContent;
-        var empSex = values[3].textContent;
-        var empFired = values[4].textContent;
-        if (empSex=="Мужской")
+        
+       if (event.target.parentElement.rowIndex!=this.state.selectedRow)
+    {     
+        this.setState({ rows:this.state.rows, selectedRow: event.target.parentElement.rowIndex })
+    }
+        else
+            {
+                this.setState({ rows:this.state.rows, selectedRow: -1 })
+            }
+
+  };
+componentDidMount()
+{
+    var dropDown = document.getElementById("empPos");
+    var points = ["Стажёр", "Младший специалист", "Специалист", "Руководитель"];
+
+function populateCats() {
+    for (var i = 0; i < points.length; i++) {
+        var element = document.createElement("option");
+        element.textContent = points[i];
+        element.value = points[i];
+        dropDown.appendChild(element);
+    }
+}
+
+$("#empSexMale").prop("checked", true);
+$("#delete").prop("disabled", true);
+populateCats();
+}
+
+
+componentDidUpdate(prevProps, prevState) {
+ var points = ["Стажёр", "Младший специалист", "Специалист", "Руководитель"];
+    if ((this.state.selectedRow!=-1) && (prevState.selectedRow!=this.state.selectedRow))
+     {
+         $(".selected").removeClass("selected")
+         $("#table_body").find("tr").eq(this.state.selectedRow-1).addClass("selected")
+          var values = $("#table_body").find("tr").eq(this.state.selectedRow-1).children();
+          var empFIO = values[0].innerHTML;
+          var empPos = values[1].innerHTML;
+          var curDate= values[2].innerHTML;
+          var empSex = values[3].innerHTML;
+          var empFired = values[4].innerHTML;
+          if (empSex=="Мужской")
             {
             $("#empSexMale").prop("checked", true);
         }
@@ -294,11 +327,11 @@ handleAddRow = () => {
         $("#empPos").val(points[points.indexOf(empPos)]);
         $("#ok").prop("disabled", true);
         $("#delete").prop("disabled", false);
-       
-    }
-        else
-            {
-            event.target.parentElement.className="";
+     }
+    
+    if ((this.state.selectedRow==-1)&& (prevState.selectedRow!=-1))
+        {
+            $(".selected").removeClass("selected");
             $("#empFIO").val("");
             $("#empBDate").val("");
             $("#empPos").val(points[0]);
@@ -306,27 +339,9 @@ handleAddRow = () => {
             $("#empSexMale").prop("checked", true);
             $("#delete").prop("disabled", true);
             $("#ok").prop("disabled", false);
-            }
-
-  };
-componentDidMount()
-{
-    var dropDown = document.getElementById("empPos");
-    var points = ["Стажёр", "Младший специалист", "Специалист", "Руководитель"];
-
-function populateCats() {
-    for (var i = 0; i < points.length; i++) {
-        var element = document.createElement("option");
-        element.textContent = points[i];
-        element.value = points[i];
-        dropDown.appendChild(element);
-    }
+        }
 }
 
-$("#empSexMale").prop("checked", true);
-$("#delete").prop("disabled", true);
-populateCats();
-}
 
   render() {
     return (
@@ -361,7 +376,7 @@ populateCats();
                 </thead>
                 <tbody id="table_body" className="table-main">
                   {this.state.rows.map((item, id) => (
-                    <tr key={id} onClick={this.handleClickRow}>
+                    <tr key={id} onClick={this.handleClickRow.bind(this)}>
                       <td>
                           {this.state.rows[id].name}
                       </td>
@@ -403,4 +418,6 @@ populateCats();
 
 ReactDOM.render(<App />, document.getElementById("root"));
     
-</script></html>
+</script>
+
+</html>
